@@ -13,6 +13,7 @@ using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices;
 using Microsoft.Win32;
 using System.Linq;
+using System.Text;
 
 namespace IdealSqlTracer {
 
@@ -463,6 +464,38 @@ namespace IdealSqlTracer {
             myControlEntity.ColumnSpan = 0;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
+         
+
+            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, -1, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                goto myExitApplication;
+            }
+
+            string strDatabaseName = myListControlEntity.Find(x => x.ID == "myComboBox").SelectedValue;
+ 
+            fileName = "DatabaseSelectedValue.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strDatabaseName);
+            string strLocalOutputFolder = myListControlEntity.Find(x => x.ID == "txtLocalOutputFolder").Text;
+            fileName = "txtLocalOutputFolder.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLocalOutputFolder);
+            string strRemoteOutputFolder = myListControlEntity.Find(x => x.ID == "txtRemoteOutputFolder").Text;
+            fileName = "txtRemoteOutputFolder.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strRemoteOutputFolder);
+
+            intRowCtr = 0;
+            myControlEntity = new ControlEntity();
+            myListControlEntity = new List<ControlEntity>();
+            cbp = new List<ComboBoxPair>();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.ID = "lbl";
+            myControlEntity.Text = "Select Filters";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
             intRowCtr++;
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Label;
@@ -473,7 +506,7 @@ namespace IdealSqlTracer {
             myControlEntity.BackgroundColor = System.Windows.Media.Colors.Red;
             myControlEntity.FontWeight = FontWeights.ExtraBold;
             myControlEntity.ColumnNumber = 0;
-            myControlEntity.ColumnSpan = 2;
+            myControlEntity.ColumnSpan = 4;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
             intRowCtr++;
@@ -483,27 +516,1998 @@ namespace IdealSqlTracer {
             myControlEntity.Text = "Using localhost (w3wp and dllhost only)";
             myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 4;
             myControlEntity.Checked = true;
             myControlEntity.ForegroundColor = System.Windows.Media.Colors.Red;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, -1, 0);
+            // column headings
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblColumn";
+            myControlEntity.Text = "Column";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblLogicalOperator";
+            myControlEntity.Text = "Logical Operator";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblComparisonOperator_01";
+            myControlEntity.Text = "Comparison Operator";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+         
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblmyValue";
+            myControlEntity.Text = "myValue";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_01
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_01.txt";
+            string strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_01";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            List<ComboBoxPair> cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_01.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_01";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());     
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            List<ComboBoxPair> cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_01.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_01";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_01";
+            fileName = "txtmyValue_01.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_02
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_02.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_02";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_02.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_02";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_02.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_02";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_02";
+            fileName = "txtmyValue_02.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_03
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_03.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_03";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_03.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_03";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_03.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_03";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_03";
+            fileName = "txtmyValue_03.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_04
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_04.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_04";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_04.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_04";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_04.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_04";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_04";
+            fileName = "txtmyValue_04.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_05
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_05.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_05";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_05.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_05";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_05.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_05";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_05";
+            fileName = "txtmyValue_05.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_06
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_06.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_06";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_06.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_06";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_06.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_06";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_06";
+            fileName = "txtmyValue_06.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_07
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_07.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_07";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_07.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_07";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_07.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_07";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_07";
+            fileName = "txtmyValue_07.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_08
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_08.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_08";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_08.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_08";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_08.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_08";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_08";
+            fileName = "txtmyValue_08.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_09
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_09.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_09";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_09.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_09";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_09.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_09";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_09";
+            fileName = "txtmyValue_09.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_10
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_10.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_10";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_10.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_10";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_10.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_10";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_10";
+            fileName = "txtmyValue_10.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_11
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_11.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_11";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_11.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_11";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_11.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_11";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_11";
+            fileName = "txtmyValue_11.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_12
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_12.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_12";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_12.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_12";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_12.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_12";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_12";
+            fileName = "txtmyValue_12.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_13
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_13.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_13";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_13.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_13";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_13.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_13";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_13";
+            fileName = "txtmyValue_13.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_14
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_14.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_14";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_14.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_14";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_14.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_14";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_14";
+            fileName = "txtmyValue_14.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_15
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_15.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_15";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_15.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_15";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_15.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_15";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_15";
+            fileName = "txtmyValue_15.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_16
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_16.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_16";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_16.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_16";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_16.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_16";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_16";
+            fileName = "txtmyValue_16.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_17
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_17.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_17";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_17.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_17";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_17.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_17";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_17";
+            fileName = "txtmyValue_17.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_18
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_18.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_18";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_18.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_18";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_18.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_18";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_18";
+            fileName = "txtmyValue_18.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_19
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_19.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_19";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_19.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_19";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_19.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_19";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_19";
+            fileName = "txtmyValue_19.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            // row data_20
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp.Add(new ComboBoxPair("Application Name", "10"));
+            cbp.Add(new ComboBoxPair("NTUserName", "6"));
+            cbp.Add(new ComboBoxPair("TextData", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            fileName = "cbxColumn_20.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxColumn_20";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp1 = new List<ComboBoxPair>();
+            cbp1.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp1.Add(new ComboBoxPair("And", "0"));
+            cbp1.Add(new ComboBoxPair("Or", "1"));
+            myControlEntity.ListOfKeyValuePairs = cbp1;
+            fileName = "cbxLogicalOperator_20.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxLogicalOperator_20";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            cbp2 = new List<ComboBoxPair>();
+            cbp2.Add(new ComboBoxPair("--Select--", "-1"));
+            cbp2.Add(new ComboBoxPair("equal", "0"));
+            cbp2.Add(new ComboBoxPair("not equal", "1"));
+            cbp2.Add(new ComboBoxPair("like", "6"));
+            cbp2.Add(new ComboBoxPair("not like", "7"));
+            myControlEntity.ListOfKeyValuePairs = cbp2;
+            fileName = "cbxComparisonOperator_20.txt";
+            strTemp = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strTemp == "") {
+                myControlEntity.SelectedValue = "-1";
+            } else {
+                myControlEntity.SelectedValue = strTemp;
+            }
+            myControlEntity.ID = "cbxComparisonOperator_20";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.DDLName = "";
+            myControlEntity.ColumnNumber = 2;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtmyValue_20";
+            fileName = "txtmyValue_20.txt";
+            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 700, 600, 0, 0);
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
-                goto myExitApplication;
+                goto myExit;
             }
-
-            string strDatabaseName = myListControlEntity.Find(x => x.ID == "myComboBox").SelectedValue;
             bool boolUsingLocalhost = myListControlEntity.Find(x => x.ID == "myCheckBox").Checked;
-            fileName = "DatabaseSelectedValue.txt";
-            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strDatabaseName);
-            string strLocalOutputFolder = myListControlEntity.Find(x => x.ID == "txtLocalOutputFolder").Text;
-            fileName = "txtLocalOutputFolder.txt";
-            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLocalOutputFolder);
-            string strRemoteOutputFolder = myListControlEntity.Find(x => x.ID == "txtRemoteOutputFolder").Text;
-            fileName = "txtRemoteOutputFolder.txt";
-            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strRemoteOutputFolder);
+            // row_01
+            string strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_01").SelectedValue;
+            fileName = "cbxColumn_01.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            string strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_01").SelectedValue;
+            fileName = "cbxLogicalOperator_01.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            string strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_01").SelectedValue;
+            fileName = "cbxComparisonOperator_01.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            string strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_01").Text;
+            fileName = "txtmyValue_01.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_02
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_02").SelectedValue;
+            fileName = "cbxColumn_02.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_02").SelectedValue;
+            fileName = "cbxLogicalOperator_02.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_02").SelectedValue;
+            fileName = "cbxComparisonOperator_02.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_02").Text;
+            fileName = "txtmyValue_02.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_03
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_03").SelectedValue;
+            fileName = "cbxColumn_03.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_03").SelectedValue;
+            fileName = "cbxLogicalOperator_03.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_03").SelectedValue;
+            fileName = "cbxComparisonOperator_03.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_03").Text;
+            fileName = "txtmyValue_03.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_04
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_04").SelectedValue;
+            fileName = "cbxColumn_04.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_04").SelectedValue;
+            fileName = "cbxLogicalOperator_04.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_04").SelectedValue;
+            fileName = "cbxComparisonOperator_04.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_04").Text;
+            fileName = "txtmyValue_04.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_05
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_05").SelectedValue;
+            fileName = "cbxColumn_05.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_05").SelectedValue;
+            fileName = "cbxLogicalOperator_05.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_05").SelectedValue;
+            fileName = "cbxComparisonOperator_05.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_05").Text;
+            fileName = "txtmyValue_05.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_06
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_06").SelectedValue;
+            fileName = "cbxColumn_06.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_06").SelectedValue;
+            fileName = "cbxLogicalOperator_06.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_06").SelectedValue;
+            fileName = "cbxComparisonOperator_06.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_06").Text;
+            fileName = "txtmyValue_06.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_07
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_07").SelectedValue;
+            fileName = "cbxColumn_07.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_07").SelectedValue;
+            fileName = "cbxLogicalOperator_07.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_07").SelectedValue;
+            fileName = "cbxComparisonOperator_07.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_07").Text;
+            fileName = "txtmyValue_07.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_08
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_08").SelectedValue;
+            fileName = "cbxColumn_08.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_08").SelectedValue;
+            fileName = "cbxLogicalOperator_08.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_08").SelectedValue;
+            fileName = "cbxComparisonOperator_08.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_08").Text;
+            fileName = "txtmyValue_08.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_09
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_09").SelectedValue;
+            fileName = "cbxColumn_09.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_09").SelectedValue;
+            fileName = "cbxLogicalOperator_09.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_09").SelectedValue;
+            fileName = "cbxComparisonOperator_09.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_09").Text;
+            fileName = "txtmyValue_09.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_10
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_10").SelectedValue;
+            fileName = "cbxColumn_10.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_10").SelectedValue;
+            fileName = "cbxLogicalOperator_10.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_10").SelectedValue;
+            fileName = "cbxComparisonOperator_10.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_10").Text;
+            fileName = "txtmyValue_10.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_11
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_11").SelectedValue;
+            fileName = "cbxColumn_11.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_11").SelectedValue;
+            fileName = "cbxLogicalOperator_11.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_11").SelectedValue;
+            fileName = "cbxComparisonOperator_11.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_11").Text;
+            fileName = "txtmyValue_11.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_12
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_12").SelectedValue;
+            fileName = "cbxColumn_12.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_12").SelectedValue;
+            fileName = "cbxLogicalOperator_12.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_12").SelectedValue;
+            fileName = "cbxComparisonOperator_12.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_12").Text;
+            fileName = "txtmyValue_12.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_13
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_13").SelectedValue;
+            fileName = "cbxColumn_13.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_13").SelectedValue;
+            fileName = "cbxLogicalOperator_13.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_13").SelectedValue;
+            fileName = "cbxComparisonOperator_13.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_13").Text;
+            fileName = "txtmyValue_13.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_14
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_14").SelectedValue;
+            fileName = "cbxColumn_14.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_14").SelectedValue;
+            fileName = "cbxLogicalOperator_14.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_14").SelectedValue;
+            fileName = "cbxComparisonOperator_14.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_14").Text;
+            fileName = "txtmyValue_14.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_15
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_15").SelectedValue;
+            fileName = "cbxColumn_15.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_15").SelectedValue;
+            fileName = "cbxLogicalOperator_15.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_15").SelectedValue;
+            fileName = "cbxComparisonOperator_15.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_15").Text;
+            fileName = "txtmyValue_15.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_16
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_16").SelectedValue;
+            fileName = "cbxColumn_16.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_16").SelectedValue;
+            fileName = "cbxLogicalOperator_16.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_16").SelectedValue;
+            fileName = "cbxComparisonOperator_16.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_16").Text;
+            fileName = "txtmyValue_16.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_17
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_17").SelectedValue;
+            fileName = "cbxColumn_17.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_17").SelectedValue;
+            fileName = "cbxLogicalOperator_17.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_17").SelectedValue;
+            fileName = "cbxComparisonOperator_17.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_17").Text;
+            fileName = "txtmyValue_17.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_18
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_18").SelectedValue;
+            fileName = "cbxColumn_18.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_18").SelectedValue;
+            fileName = "cbxLogicalOperator_18.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_18").SelectedValue;
+            fileName = "cbxComparisonOperator_18.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_18").Text;
+            fileName = "txtmyValue_18.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_19
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_19").SelectedValue;
+            fileName = "cbxColumn_19.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_19").SelectedValue;
+            fileName = "cbxLogicalOperator_19.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_19").SelectedValue;
+            fileName = "cbxComparisonOperator_19.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_19").Text;
+            fileName = "txtmyValue_19.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // row_20
+            strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_20").SelectedValue;
+            fileName = "cbxColumn_20.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strColumn);
+            strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_20").SelectedValue;
+            fileName = "cbxLogicalOperator_20.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strLogicalOperator);
+            strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_20").SelectedValue;
+            fileName = "cbxComparisonOperator_20.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strComparisonOperator);
+            strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_20").Text;
+            fileName = "txtmyValue_20.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strmyValue);
+
+            // build the filters
+            StringBuilder sb = new StringBuilder();
+            for (int i = 1; i < 21; i++) {
+                string strI = "0";
+                if (i < 9) {
+                    strI += i.ToString();
+                } else {
+                    strI = i.ToString();
+                }
+                
+                strColumn = myListControlEntity.Find(x => x.ID == "cbxColumn_" + strI).SelectedValue;
+                if (strColumn == "-1") {
+                    break;
+                } 
+                strLogicalOperator = myListControlEntity.Find(x => x.ID == "cbxLogicalOperator_" + strI).SelectedValue;
+                strComparisonOperator = myListControlEntity.Find(x => x.ID == "cbxComparisonOperator_" + strI).SelectedValue;
+                strmyValue = myListControlEntity.Find(x => x.ID == "txtmyValue_" + strI).Text;
+                sb.AppendLine(" ");
+                //  "exec sp_trace_setfilter  @trace_id, 35, 1, 0, N'" + strDatabaseName + "';   " +
+                sb.AppendLine("exec sp_trace_setfilter  @trace_id, " + strLogicalOperator + ", " + strComparisonOperator + ", N'" + strmyValue +"';   ");
+            }
 
             // Run SqlProfiler
             // Get ProcessID for w3wp.exe
@@ -616,7 +2620,8 @@ namespace IdealSqlTracer {
                 "exec sp_trace_setfilter  @trace_id, 1, 0, 7, N'exec sp_reset_connection';   " +
                 " " +
                 "exec sp_trace_setfilter  @trace_id, 1, 0, 7, N'/* sys.traces%';  " +
-                " " +
+                sb.ToString() +
+                " " +                 
                 "/* " +
                 " " +
                 "--turn on the trace: status=1 " +
