@@ -286,11 +286,37 @@ namespace IdealSqlTracer {
             myControlEntity.ControlType = ControlType.PasswordBox;
             myControlEntity.ID = "txtPassword";
             fileName = "txtPss.txt";
-            myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            string strPass = "";          
+            string inputFullFileName1 = Path.Combine(settingsDirectory, fileName.Replace(".", "Encrypted."));
+            string outputFullFileName1 = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(inputFullFileName1)) {                
+                EncryptDecrypt ed1 = new EncryptDecrypt();
+                ed1.DecryptFile(inputFullFileName1, outputFullFileName1);
+                strPass = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            }
+            File.Delete(outputFullFileName1);
+            myControlEntity.Text = strPass;
             myControlEntity.ToolTipx = "Password for logging into server";
             myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ColumnNumber = 1;
             myControlEntity.ColumnSpan = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.CheckBox;
+            myControlEntity.ID = "myCheckBox";
+            myControlEntity.Text = "Remember Password";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            fileName = "RememberPassword.txt";
+            string strRememberPassword = ReadValueFromAppDataFile(settingsDirectory, fileName);
+            if (strRememberPassword.ToLower() == "true") {
+                myControlEntity.Checked = true;
+            } else {
+                myControlEntity.Checked = false;
+            }
+            myControlEntity.ForegroundColor = System.Windows.Media.Colors.Red;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
             strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, -1, 0);
@@ -300,6 +326,9 @@ namespace IdealSqlTracer {
                 goto myExitApplication;
             }
 
+            bool boolRememberPassword = myListControlEntity.Find(x => x.ID == "myCheckBox").Checked;
+            fileName = "RememberPassword.txt";
+            WriteValueToAppDirectoryFile(settingsDirectory, fileName, boolRememberPassword.ToString());
             string strServerName = myListControlEntity.Find(x => x.ID == "myComboBox").SelectedValue;
             fileName = "ServerSelectedValue.txt";
             WriteValueToAppDirectoryFile(settingsDirectory, fileName, strServerName);
@@ -311,7 +340,14 @@ namespace IdealSqlTracer {
             WriteValueToAppDirectoryFile(settingsDirectory, fileName, strUserName);
             string strPassword = myListControlEntity.Find(x => x.ID == "txtPassword").Text;
             fileName = "txtPss.txt";
-            WriteValueToAppDirectoryFile(settingsDirectory, fileName, strPassword);
+            if (boolRememberPassword) {
+                WriteValueToAppDirectoryFile(settingsDirectory, fileName, strPassword);
+                string inputFullFileName = Path.Combine(settingsDirectory, fileName);
+                string outputFullFileName = Path.Combine(settingsDirectory, fileName.Replace(".","Encrypted."));
+                EncryptDecrypt ed = new EncryptDecrypt();
+                ed.EncryptFile(inputFullFileName, outputFullFileName);
+                File.Delete(inputFullFileName);
+            }
              
             if (strAlternateServer.Trim() != "") {
                 strServerName = strAlternateServer;
@@ -370,6 +406,19 @@ namespace IdealSqlTracer {
             intRowCtr++;
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblLocalOutputFolder1";
+            myControlEntity.Text = "IMPORTANT: SQL Server needs full control permission to the TraceFile.trc that" + System.Environment.NewLine + "is in the output folder. Failure to do this results in a long list of repetitive error messages";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ForegroundColor = System.Windows.Media.Colors.White;
+            myControlEntity.BackgroundColor = System.Windows.Media.Colors.Red;
+            myControlEntity.FontWeight = FontWeights.ExtraBold;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
             myControlEntity.ID = "lblLocalOutputFolder";
             myControlEntity.Text = "Local Output Folder";
             myControlEntity.RowNumber = intRowCtr;
@@ -383,7 +432,8 @@ namespace IdealSqlTracer {
             myControlEntity.Text = ReadValueFromAppDataFile(settingsDirectory, fileName);
             myControlEntity.ToolTipx = "If the SQL Server you are tracing is installed on your local computer, " 
                 + System.Environment.NewLine + "specify the folder where the trace can be written to. " 
-                + System.Environment.NewLine + "SQLServerMSSQLUser needs Full Control permission rights must be specified for this folder.";
+                + System.Environment.NewLine + "SQLServerMSSQLUser needs Full Control permission rights must be specified for this folder."
+                 + System.Environment.NewLine + "EXAMPLE: C:\\Data\\";
             myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ColumnNumber = 1;
             myControlEntity.ColumnSpan = 0;
@@ -406,7 +456,8 @@ namespace IdealSqlTracer {
             myControlEntity.ToolTipx = "If the SQL Server you are tracing is installed on a remote computer, " + 
             System.Environment.NewLine + "specify the folder where the trace can be written to." + 
             System.Environment.NewLine + "SQLServer must have Full Control permission rights for must be specified for the file TraceFile.trc. " + 
-            System.Environment.NewLine + "If you do not have rights to the remote computer, use shared drive.";
+            System.Environment.NewLine + "If you do not have rights to the remote computer, use shared drive." +
+            System.Environment.NewLine + "EXAMPLE: \\\\NetworkShare\\Users\\Wade\\Data\\";
             myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ColumnNumber = 1;
             myControlEntity.ColumnSpan = 0;
@@ -592,7 +643,7 @@ namespace IdealSqlTracer {
                 Console.WriteLine("Executing {0}", myCommand.CommandText);
                 intTraceID = (int)myCommand.ExecuteScalar();
                 Console.WriteLine("TraceID : {0}", intTraceID);
-                myActions.WindowShape("RedBox", "", "", " Trace has already started;\r\n Please perform website action;\r\n After website action completes,\r\n click okay button in this red box to end trace", 500, 500);
+                myActions.WindowShape("GreenBox", "", "", " Trace has been started;\r\n Please perform website\\desktop app action;\r\n After website\\desktop app action completes,\r\n click stop button in this green box to end trace", 400, 500);
 
                 foreach (var item in localAll) {
                     if (item.ProcessName == "w3wp") {
