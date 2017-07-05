@@ -63,16 +63,6 @@ namespace IdealSqlTracer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap GreenBox {
-            get {
-                object obj = ResourceManager.GetObject("GreenBox", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap RedArrowDown {
             get {
                 object obj = ResourceManager.GetObject("RedArrowDown", resourceCulture);
