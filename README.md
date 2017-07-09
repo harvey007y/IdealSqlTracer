@@ -1,7 +1,8 @@
 # IdealSqlTracer
 IdealSqlTracer is a simple, free, open source alternative to SQL Profiler. The advantage of IdealSqlTracer is that it takes all of the sql generated behind the scenes in a desktop application or web page, and it formats it to make it easily readable. IdealSqlTracer takes this beautifully formatted sql, and puts it into notepad. This allows you to easily cut-n-paste the sql in notepad, and run it directly in Sql Server Management Studio (SSMS). The advantage of doing this is that it makes it possible for you to see exactly what is going on in your application or website.<br/>
-<center>[![IdealSqlTracer Overview Video](http://www.idealautomate.com/images/IdealSqlTracer.PNG)](https://www.youtube.com/watch?v=oek38x27tzc)</center>
-
+<center>
+[![IdealSqlTracer Overview Video](http://www.idealautomate.com/images/IdealSqlTracer.PNG)](https://www.youtube.com/watch?v=oek38x27tzc)]
+</center>
   Steps to use:<br/>
       1. Get Latest source for IdealSqlTracer at https://github.com/harvey007y/IdealSqlTracer <br/>
       2. Build and Run IdealSqlTracer<br/>
