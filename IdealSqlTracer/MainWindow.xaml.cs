@@ -2743,7 +2743,10 @@ namespace IdealSqlTracer {
                 myActions.MessageBoxShow("No SQL was generated that was running under w3wp,dllhost, or the selected db ");
                 goto myExitApplication;
             }
-            string strOutFile = @"c:\\Data\UnformattedSql.sql";
+            if (!strLocalOutputFolder.EndsWith("\\")) {
+                strLocalOutputFolder += "\\";
+            }
+            string strOutFile = strLocalOutputFolder + @"UnformattedSql.sql";
             if (File.Exists(strOutFile)) {
                 File.Delete(strOutFile);
             }
@@ -2755,7 +2758,7 @@ namespace IdealSqlTracer {
             try {
                 string strAppPath = System.AppDomain.CurrentDomain.BaseDirectory;
                 strAppPath = strAppPath.Replace("bin\\Debug\\", "");
-                myActions.RunSync(strAppPath + "SqlFormatter.exe", @"c:\\Data\UnformattedSql.sql /o:c:\\Data\FormattedSql.sql");
+                myActions.RunSync(strAppPath + "SqlFormatter.exe", strLocalOutputFolder + @"UnformattedSql.sql /o:" + strLocalOutputFolder + @"FormattedSql.sql");
 
             } catch (Exception ex) {
                 myActions.MessageBoxShow(ex.Message);
@@ -2764,7 +2767,7 @@ namespace IdealSqlTracer {
             }
 
             string strExecutable = @"C:\Windows\system32\notepad.exe";
-            string strContent = @"c:\\Data\FormattedSql.sql";
+            string strContent = strLocalOutputFolder + @"FormattedSql.sql";
             Process.Start(strExecutable, string.Concat("", strContent, ""));
             myExitApplication:
             Application.Current.Shutdown();
