@@ -71,6 +71,16 @@ namespace IdealSqlTracer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Oxygen_Icons_org_Oxygen_Places_server_database {
+            get {
+                object obj = ResourceManager.GetObject("Oxygen_Icons_org_Oxygen_Places_server_database", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap RedArrowDown {

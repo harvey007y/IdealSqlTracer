@@ -67,6 +67,9 @@
   <PropertyGroup>
     <StartupObject>IdealSqlTracer.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Oxygen-Icons.org-Oxygen-Places-server-database.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -185,6 +188,8 @@
     <Resource Include="Resources\RedArrowUp.png" />
     <Resource Include="Resources\RedBox.png" />
     <Resource Include="Resources\GreenBox.png" />
+    <Resource Include="Resources\Oxygen-Icons.org-Oxygen-Places-server-database.ico" />
+    <Resource Include="Oxygen-Icons.org-Oxygen-Places-server-database.ico" />
     <Content Include="SqlFormatter.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
